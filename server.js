@@ -10,14 +10,29 @@ app.use(express.json());
 app.use(express.static('public'));
 
 // Configure the Postgres pool using environment variables, with SSL enabled.
+// const pool = new Pool({
+//   host: process.env.DB_HOST,
+//   port: process.env.DB_PORT,
+//   database: process.env.DB_NAME,
+//   user: process.env.DB_USER,
+//   password: process.env.DB_PASSWORD,
+//   ssl: {
+//     rejectUnauthorized: false
+//   }
+// });
+
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  database: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  connectionString: process.env.connection_string,
   ssl: {
-    rejectUnauthorized: false
+    rejectUnauthorized: false,
+  },
+});
+
+pool.connect((err) => {
+  if (err) {
+    console.error("Connection error:", err.stack);
+  } else {
+    console.log("Connected to the database successfully!");
   }
 });
 
