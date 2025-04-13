@@ -9,32 +9,32 @@ app.use(express.json());
 // Serve all static files from the "public" directory
 app.use(express.static('public'));
 
-// Configure the Postgres pool using environment variables, with SSL enabled.
-// const pool = new Pool({
-//   host: process.env.DB_HOST,
-//   port: process.env.DB_PORT,
-//   database: process.env.DB_NAME,
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASSWORD,
-//   ssl: {
-//     rejectUnauthorized: false
-//   }
-// });
-
+//Configure the Postgres pool using environment variables, with SSL enabled.
 const pool = new Pool({
-  connectionString: process.env.connection_string,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_NAME,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
   ssl: {
-    rejectUnauthorized: false,
-  },
-});
-
-pool.connect((err) => {
-  if (err) {
-    console.error("Connection error:", err.stack);
-  } else {
-    console.log("Connected to the database successfully!");
+    rejectUnauthorized: false
   }
 });
+
+// const pool = new Pool({
+//   connectionString: process.env.connection_string,
+//   ssl: {
+//     rejectUnauthorized: false,
+//   },
+// });
+
+// pool.connect((err) => {
+//   if (err) {
+//     console.error("Connection error:", err.stack);
+//   } else {
+//     console.log("Connected to the database successfully!");
+//   }
+// });
 
 // Endpoint to generate SQL using Groq API.
 app.post('/generate_sql', async (req, res) => {
